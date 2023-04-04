@@ -8,7 +8,7 @@ import checkAuth from './utils/checkAuth.js';
 import * as PostController from './controllers/PostController.js';
 import handleValidationErrors from './validations/handleValidationErrors.js';
 mongoose
-  .connect('mongodb+srv://SlimReaper:rajonrondo9@cluster.tr0sn5m.mongodb.net/blog')
+  .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('DB is ok');
   })
@@ -50,7 +50,7 @@ app.patch(
   handleValidationErrors,
   PostController.update,
 );
-app.listen(4444, (err) => {
+app.listen(process.env.PORT || 4444, (err) => {
   if (err) {
     return console.log(err);
   }
