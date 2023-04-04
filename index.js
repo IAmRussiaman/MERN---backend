@@ -9,7 +9,10 @@ import checkAuth from './utils/checkAuth.js';
 import * as PostController from './controllers/PostController.js';
 import handleValidationErrors from './validations/handleValidationErrors.js';
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(
+    process.env.MONGODB_URI ||
+      `mongodb+srv://SlimReaper:rajonrondo9@cluster.tr0sn5m.mongodb.net/blog`,
+  )
   .then(() => {
     console.log('DB is ok');
   })
@@ -19,7 +22,7 @@ mongoose
 const app = express();
 const storage = multer.diskStorage({
   destination: (_, __, cb) => {
-    if (!fs.exystSync('uploads')) {
+    if (!fs.existsSync('uploads')) {
       fs.mkdirSync('uploads');
     }
     cb(null, 'uploads');
