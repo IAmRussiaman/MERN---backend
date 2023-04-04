@@ -2,7 +2,6 @@ import PostModel from '../models/Post.js';
 export const getLastTags = async (req, res) => {
   try {
     const posts = await PostModel.find().limit(10).exec();
-    //dobijamo poslednjig 5 postova
     const tags = posts
       .map((obj) => obj.tags)
       .flat()
@@ -18,7 +17,7 @@ export const getLastTags = async (req, res) => {
 export const getAll = async (req, res) => {
   try {
     const posts = await PostModel.find().populate('user').sort({ createdAt: -1 }).exec();
-    //dobijamo sve postove zajedno sa podacima o userima preko populate i exec
+
     res.json(posts);
   } catch (error) {
     res.status(404).json({
@@ -29,7 +28,6 @@ export const getAll = async (req, res) => {
 export const getByPopularity = async (req, res) => {
   try {
     const posts = await PostModel.find().populate('user').sort({ viewsCount: 'desc' }).exec();
-    //dobijamo sve postove zajedno sa podacima o userima preko populate i exec
     res.json(posts);
   } catch (error) {
     res.status(404).json({
@@ -60,13 +58,13 @@ export const create = async (req, res) => {
 export const getOne = async (req, res) => {
   try {
     const postId = req.params.id;
-    //vadimo id posta i requesta
+    //vadimo id posta iz requesta
     await PostModel.findOneAndUpdate(
       {
         _id: postId, //prvi parametar po kom trazimo zeljeni post
       },
       {
-        $inc: { viewsCount: 1 }, //ovde zelimo da views menja
+        $inc: { viewsCount: 1 }, //ovde zelimo da  se views menja
       },
       {
         returnDocument: 'after', //ovde zelimo da nam vraca updejtovan post(sa update pregledima)
@@ -90,7 +88,7 @@ export const getOne = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: 'Ne moguuuuuuuuuu',
+      message: 'Error while getting a post',
     });
   }
 };
