@@ -40,7 +40,7 @@ export const login = async (req, res) => {
     const user = await UserModel.findOne({ email: req.body.email });
     if (!user) {
       return res.status(404).json({
-        message: 'Incorrect email or passwords1',
+        message: 'Incorrect email or password',
       });
     }
     const isValidPass = await bcrypt.compare(req.body.password, user._doc.passwordHash);
@@ -71,9 +71,8 @@ export const login = async (req, res) => {
 };
 
 export const me = async (req, res) => {
-  //checkAuth je middleware f-ja koja prvo mora da se odradi pa tek onda ostatak koda
   try {
-    const user = await UserModel.findById(req.userId); //trazimo user po id koji smo uzeli iz tokena
+    const user = await UserModel.findById(req.userId); //trazimo usera po id koji smo uzeli iz tokena
     if (!user) {
       return res.status(404).json({
         message: 'Cant find a user',
