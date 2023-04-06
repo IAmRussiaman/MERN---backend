@@ -44,7 +44,6 @@ app.use(
     extended: true,
   }),
 );
-app.use(cookieParser());
 app.use(cors());
 //////////////////
 app.post('/auth/login', handleValidationErrors, UserController.login);
