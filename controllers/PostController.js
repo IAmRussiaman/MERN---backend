@@ -1,4 +1,5 @@
 import PostModel from '../models/Post.js';
+import cloudinary from '../utils/cloudinary.js';
 export const getLastTags = async (req, res) => {
   try {
     const posts = await PostModel.find().limit(10).exec();
@@ -38,10 +39,14 @@ export const getByPopularity = async (req, res) => {
 
 export const create = async (req, res) => {
   try {
+    const result = await cloudinary.uploader.upload(req.body.imageUrl, { folder: 'mern' });
     const doc = new PostModel({
       title: req.body.title,
       text: req.body.text,
-      imageUrl: req.body.imageUrl,
+      imageUrl: {
+        public_id: result.public_id,
+        url: result.secure_url,
+      },
       tags: req.body.tags,
       user: req.userId,
     });
