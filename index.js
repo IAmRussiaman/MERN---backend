@@ -13,6 +13,11 @@ mongoose
   .connect(
     process.env.MONGODB_URI ||
       `mongodb+srv://SlimReaper:rajonrondo9@cluster.tr0sn5m.mongodb.net/blog`,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+    },
   )
   .then(() => {
     console.log('DB is ok');
