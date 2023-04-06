@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import multer from 'multer';
 import cors from 'cors';
 import fs from 'fs';
+import bodyParser from 'body-parser';
 import { registerValidation, postCreateValidation } from './validations/auth.js';
 import * as UserController from './controllers/UserController.js';
 import checkAuth from './utils/checkAuth.js';
@@ -35,6 +36,17 @@ const upload = multer({ storage });
 app.use(express.json());
 app.use(cors());
 app.use('/uploads', express.static('uploads'));
+app.use(bodyParser.json({ limit: '100mb' }));
+app.use(
+  bodyParser.urlencoded({
+    // to support URL-encoded bodies
+    limit: '100mb',
+    extended: true,
+  }),
+);
+app.use(cookieParser());
+app.use(cors());
+//////////////////
 app.post('/auth/login', handleValidationErrors, UserController.login);
 app.post('/register', registerValidation, handleValidationErrors, UserController.register);
 app.get('/me', checkAuth, UserController.me);
