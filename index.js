@@ -44,6 +44,9 @@ app.use(
     extended: true,
   }),
 );
+app.use(express.json({ limit: '50mb' })); // for incoming Request Object as json
+
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cors());
 //////////////////
 app.post('/auth/login', handleValidationErrors, UserController.login);
